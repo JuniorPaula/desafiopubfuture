@@ -4,7 +4,8 @@
   "description": "API de finanças pessoais",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/server.js"
   },
   "author": "Junior Paula",
   "license": "ISC",
@@ -12,6 +13,8 @@
     "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^2.5.1"
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1",
+    "sucrase": "^3.20.3"
   }
 }
