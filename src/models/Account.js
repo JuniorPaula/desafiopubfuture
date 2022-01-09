@@ -39,4 +39,11 @@ export default class Account extends Model {
 
     return this;
   }
+
+  static associate(models) {
+    return this.hasMany(models.Income, {
+      foreignKey: 'account_id',
+      as: 'incomes',
+    });
+  }
 }
