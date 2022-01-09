@@ -119,6 +119,57 @@ class AccountsController {
       });
     }
   }
+
+  /** método responsável por realizar transferências entre contas */
+  async transferBetweenAccounts(req, res) {
+    try {
+      /** recuperar o id da conta que var fazer a transferência por parâmetro,
+       *  recuperar o nome da conta que vai receber a transfêrencia e o valor
+       *  a ser transferido pelo body da requisição.
+       */
+      const { id } = req.params;
+      const { value, account_id, account_name } = req.body;
+
+      /** recuperar a conta pagadora e a conta recebedora pelo id */
+      const accountToTransfer = await Account.findByPk(id);
+      const accountToReciver = await Account.findByPk(account_id);
+
+      /** recuperar o nome da contar que vai recerber o valor */
+      const accountNameToReciver = accountToReciver.type_account;
+      const balanceToAccountReciver = accountToReciver.balance;
+
+      /** lógica para validar conta */
+      if (account_name !== accountNameToReciver) {
+        return res.status(400).json({
+          errors: ['Account not found.'],
+        });
+      }
+
+      /** lógica para validar o valor enviado */
+      const balanceToAccountTransfer = accountToTransfer.balance;
+
+      if (value > balanceToAccountTransfer || value <= 0) {
+        return res.status(400).json({
+          errors: ['insufficient funds.'],
+        });
+      }
+
+      /** lógica de transferência */
+      const oldBalance = balanceToAccountTransfer - Number(value);
+      const newBalance = balanceToAccountReciver + Number(value);
+
+      await accountToTransfer.update({ balance: oldBalance });
+      await accountToReciver.update({ balance: newBalance });
+
+      res.status(201).json({
+        message: `Transferência de ${value} realizada com succeso.`,
+      });
+    } catch (err) {
+      return res.status(400).json({
+        errors: `Error: ${err}`,
+      });
+    }
+  }
 }
 
 export default new AccountsController();
