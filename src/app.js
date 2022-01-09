@@ -2,6 +2,7 @@ import 'dotenv/config';
 import './database';
 import express from 'express';
 import accountRoutes from './routes/accountRoutes';
+import incomeRoutes from './routes/incomeRoutes';
 
 class App {
   constructor() {
@@ -17,6 +18,7 @@ class App {
 
   routes() {
     this.app.use('/accounts', accountRoutes);
+    this.app.use('/incomes', incomeRoutes);
   }
 }
 
