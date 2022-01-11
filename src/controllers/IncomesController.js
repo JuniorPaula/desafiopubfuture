@@ -124,6 +124,25 @@ class IncomesController {
       });
     }
   }
+
+  async showIncomeOfType(req, res) {
+    try {
+      const { name } = req.query;
+
+      const incomes = await Income.findAll({ where: { type_income: name } });
+      if (!incomes) {
+        return res.status(400).json({
+          errors: ['Income not found.'],
+        });
+      }
+
+      return res.status(200).json(incomes);
+    } catch (err) {
+      return res.status(400).json({
+        errors: `Error: ${err}`,
+      });
+    }
+  }
 }
 
 export default new IncomesController();

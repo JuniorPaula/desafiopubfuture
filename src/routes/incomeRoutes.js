@@ -7,4 +7,6 @@ router.post('/', incomesController.create);
 router.put('/:id', incomesController.update);
 router.delete('/:id', incomesController.delete);
 
+router.get('/', incomesController.showIncomeOfType);
+
 export default router;

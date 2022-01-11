@@ -3,7 +3,9 @@ import Account from '../models/Account';
 class AccountsController {
   /** método responsável por listar todas as contas */
   async index(req, res) {
-    const accounts = await Account.findAll();
+    const accounts = await Account.findAll({
+      include: { association: 'incomes' },
+    });
     return res.json(accounts);
   }
 
