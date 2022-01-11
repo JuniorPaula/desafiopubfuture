@@ -102,6 +102,28 @@ class IncomesController {
       });
     }
   }
+
+  async delete(req, res) {
+    try {
+      const { id } = req.params;
+
+      const income = await Income.findByPk(id);
+
+      if (!income) {
+        return res.status(400).json({
+          errors: ['Income not found.'],
+        });
+      }
+
+      await income.destroy(id);
+
+      return res.status(200).json([]);
+    } catch (err) {
+      return res.status(400).json({
+        errors: `Error: ${err}`,
+      });
+    }
+  }
 }
 
 export default new IncomesController();
