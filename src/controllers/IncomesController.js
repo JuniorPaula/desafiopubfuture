@@ -60,6 +60,48 @@ class IncomesController {
       });
     }
   }
+
+  /** método resposnsável por atualizar um entrada */
+  async update(req, res) {
+    try {
+      const { expected_receipt_date, description, type_income } = req.body;
+      const { id } = req.params;
+      /** tipos de dados válidos */
+      const typeOfIncomes = [
+        { name: 'Salário' },
+        { name: 'Presente' },
+        { name: 'Prêmio' },
+        { name: 'Outros' },
+      ];
+
+      const typeIncomesExists = typeOfIncomes.map((account) => account.name);
+
+      if (!typeIncomesExists.includes(type_income)) {
+        return res.status(400).json({
+          errors: ['Invalid type income.'],
+        });
+      }
+
+      const newIncome = await Income.findByPk(id);
+      if (!newIncome) {
+        return res.status(400).json({
+          errors: ['Income not found.'],
+        });
+      }
+
+      const income = await newIncome.update({
+        expected_receipt_date,
+        description,
+        type_income,
+      });
+
+      return res.status(200).json(income);
+    } catch (err) {
+      return res.status(400).json({
+        errors: `Error: ${err}`,
+      });
+    }
+  }
 }
 
 export default new IncomesController();
