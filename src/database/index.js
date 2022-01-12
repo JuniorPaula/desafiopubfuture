@@ -3,8 +3,9 @@ import databaseConfig from '../config/database';
 
 import Account from '../models/Account';
 import Income from '../models/Income';
+import Cost from '../models/Cost';
 
-const models = [Account, Income];
+const models = [Account, Income, Cost];
 
 const connection = new Sequelize(databaseConfig);
 

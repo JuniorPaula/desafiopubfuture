@@ -1,10 +1,10 @@
 import Sequelize, { Model } from 'sequelize';
 
-export default class Account extends Model {
+export default class Cost extends Model {
   static init(sequelize) {
     super.init(
       {
-        balance: {
+        amount: {
           type: Sequelize.FLOAT,
           defaultValue: '',
           validate: {
@@ -13,21 +13,33 @@ export default class Account extends Model {
             },
           },
         },
-        type_account: {
-          type: Sequelize.STRING,
+        receipt_date: {
+          type: Sequelize.DATEONLY,
           defaultValue: '',
           validate: {
-            notEmpty: {
-              msg: 'O nome da instituição financeira não pode estar vazio.',
+            isDate: {
+              msg: 'Insira uma data válida.',
             },
           },
         },
-        financial_institution: {
+        expected_receipt_date: {
+          type: Sequelize.DATEONLY,
+          defaultValue: '',
+          validate: {
+            isDate: {
+              msg: 'Insira uma data válida.',
+            },
+          },
+        },
+        account_id: {
+          type: Sequelize.INTEGER,
+        },
+        type_income: {
           type: Sequelize.STRING,
           defaultValue: '',
           validate: {
             notEmpty: {
-              msg: 'O nome da instituição financeira não pode estar vazio.',
+              msg: 'Campo tipo de entrada não pode está vazio.',
             },
           },
         },
@@ -41,10 +53,9 @@ export default class Account extends Model {
   }
 
   static associate(models) {
-    this.hasMany(models.Income, {
+    return this.belongsTo(models.Account, {
       foreignKey: 'account_id',
-      as: 'incomes',
+      as: 'accounts_costs',
     });
-    this.hasMany(models.Cost, { foreignKey: 'account_id', as: 'costs' });
   }
 }
