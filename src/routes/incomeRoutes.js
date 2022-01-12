@@ -9,5 +9,6 @@ router.delete('/:id', incomesController.delete);
 
 router.get('/', incomesController.showIncomeOfType);
 router.get('/filter', incomesController.getIncomesToDate);
+router.get('/entradas/total', incomesController.getTotalAmountIncomes);
 
 export default router;

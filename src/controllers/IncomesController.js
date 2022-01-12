@@ -171,6 +171,29 @@ class IncomesController {
       });
     }
   }
+
+  /** método responsável por listar o total de receitas */
+  async getTotalAmountIncomes(req, res) {
+    try {
+      const incomes = await Income.findAll();
+      if (!incomes) {
+        return res.status(400).json({
+          errors: ['Income not found.'],
+        });
+      }
+
+      const amounts = incomes.map((valeu) => valeu.amount);
+      const totalAmounts = amounts.reduce((ac, el) => ac + el, 0);
+
+      return res.status(200).json({
+        saldo_total: totalAmounts,
+      });
+    } catch (err) {
+      return res.status(400).json({
+        errors: `Error: ${err}`,
+      });
+    }
+  }
 }
 
 export default new IncomesController();
