@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import Account from '../models/Account';
 import Income from '../models/Income';
 
@@ -103,6 +104,7 @@ class IncomesController {
     }
   }
 
+  /** método responsável por deletar uma entrada */
   async delete(req, res) {
     try {
       const { id } = req.params;
@@ -125,6 +127,7 @@ class IncomesController {
     }
   }
 
+  /** método responsável por listar as entradas pelo tipo */
   async showIncomeOfType(req, res) {
     try {
       const { name } = req.query;
@@ -135,6 +138,31 @@ class IncomesController {
           errors: ['Income not found.'],
         });
       }
+
+      return res.status(200).json(incomes);
+    } catch (err) {
+      return res.status(400).json({
+        errors: `Error: ${err}`,
+      });
+    }
+  }
+
+  /** método responsável por filtar entradas por datas */
+  async getIncomesToDate(req, res) {
+    try {
+      const { start_date, end_date } = req.query;
+
+      /** converter a data pro formato do SQL */
+      const startDateFormated = start_date.split('/').reverse().join('-');
+      const endDateFormated = end_date.split('/').reverse().join('-');
+
+      const incomes = await Income.findAll({
+        where: {
+          receipt_date: {
+            [Op.between]: [startDateFormated, endDateFormated],
+          },
+        },
+      });
 
       return res.status(200).json(incomes);
     } catch (err) {
