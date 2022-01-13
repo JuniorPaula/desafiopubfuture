@@ -144,6 +144,26 @@ class CostsController {
       });
     }
   }
+
+  /** método responsável por listar as despesas pelo tipo */
+  async showCostOfType(req, res) {
+    try {
+      const { name } = req.query;
+
+      const cost = await Cost.findAll({ where: { type_cost: name } });
+      if (!cost) {
+        return res.status(400).json({
+          errors: ['Cost not found.'],
+        });
+      }
+
+      return res.status(200).json(cost);
+    } catch (err) {
+      return res.status(400).json({
+        errors: `Error: ${err}`,
+      });
+    }
+  }
 }
 
 export default new CostsController();
