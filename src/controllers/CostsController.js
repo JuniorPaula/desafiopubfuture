@@ -69,6 +69,58 @@ class CostsController {
       });
     }
   }
+
+  /** método resposnsável por atualizar uma despesa */
+  async update(req, res) {
+    try {
+      const { expected_receipt_date, type_cost } = req.body;
+      const { id } = req.params;
+
+      /** converter data pro formato SQL */
+      const expectedReceiptDateFormated = expected_receipt_date
+        .split('/')
+        .reverse()
+        .join('-');
+
+      /** tipos de dados válidos */
+      const typeOfCosts = [
+        { name: 'Alimentação' },
+        { name: 'Educação' },
+        { name: 'Lazer' },
+        { name: 'Moradia' },
+        { name: 'Roupa' },
+        { name: 'Saúde' },
+        { name: 'Transporte' },
+        { name: 'Outros' },
+      ];
+
+      const typeCostsExists = typeOfCosts.map((account) => account.name);
+
+      if (!typeCostsExists.includes(type_cost)) {
+        return res.status(400).json({
+          errors: ['Invalid type cost.'],
+        });
+      }
+
+      const newCost = await Cost.findByPk(id);
+      if (!newCost) {
+        return res.status(400).json({
+          errors: ['Cost not found.'],
+        });
+      }
+
+      const cost = await newCost.update({
+        expected_receipt_date: expectedReceiptDateFormated,
+        type_cost,
+      });
+
+      return res.status(200).json(cost);
+    } catch (err) {
+      return res.status(400).json({
+        errors: `Error: ${err}`,
+      });
+    }
+  }
 }
 
 export default new CostsController();
