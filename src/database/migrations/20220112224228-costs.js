@@ -27,7 +27,7 @@ module.exports = {
           key: 'id',
         },
       },
-      type_income: {
+      type_cost: {
         type: Sequelize.STRING,
         allowNull: false,
       },

@@ -34,7 +34,7 @@ export default class Cost extends Model {
         account_id: {
           type: Sequelize.INTEGER,
         },
-        type_income: {
+        type_cost: {
           type: Sequelize.STRING,
           defaultValue: '',
           validate: {
