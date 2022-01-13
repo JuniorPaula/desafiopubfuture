@@ -8,5 +8,6 @@ router.put('/:id', costsController.update);
 router.delete('/:id', costsController.delete);
 router.get('/', costsController.showCostOfType);
 router.get('/filter', costsController.getCostsToDate);
+router.get('/despesas/total', costsController.getTotalAmountCosts);
 
 export default router;

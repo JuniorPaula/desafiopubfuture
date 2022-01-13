@@ -190,6 +190,29 @@ class CostsController {
       });
     }
   }
+
+  /** método responsável por listar o total de despesas */
+  async getTotalAmountCosts(req, res) {
+    try {
+      const costs = await Cost.findAll();
+      if (!costs) {
+        return res.status(400).json({
+          errors: ['Cost not found.'],
+        });
+      }
+
+      const amounts = costs.map((valeu) => valeu.amount);
+      const totalAmounts = amounts.reduce((ac, el) => ac + el, 0);
+
+      return res.status(200).json({
+        saldo_total: totalAmounts,
+      });
+    } catch (err) {
+      return res.status(400).json({
+        errors: `Error: ${err}`,
+      });
+    }
+  }
 }
 
 export default new CostsController();

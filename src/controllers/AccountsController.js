@@ -4,7 +4,7 @@ class AccountsController {
   /** método responsável por listar todas as contas */
   async index(req, res) {
     const accounts = await Account.findAll({
-      include: { association: 'incomes' },
+      include: [{ association: 'incomes' }, { association: 'costs' }],
     });
     return res.json(accounts);
   }
