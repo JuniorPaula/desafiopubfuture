@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import Account from '../models/Account';
 import Cost from '../models/Cost';
 
@@ -158,6 +159,31 @@ class CostsController {
       }
 
       return res.status(200).json(cost);
+    } catch (err) {
+      return res.status(400).json({
+        errors: `Error: ${err}`,
+      });
+    }
+  }
+
+  /** método responsável por filtar despesas por datas */
+  async getCostsToDate(req, res) {
+    try {
+      const { start_date, end_date } = req.query;
+
+      /** converter a data pro formato do SQL */
+      const startDateFormated = start_date.split('/').reverse().join('-');
+      const endDateFormated = end_date.split('/').reverse().join('-');
+
+      const costs = await Cost.findAll({
+        where: {
+          receipt_date: {
+            [Op.between]: [startDateFormated, endDateFormated],
+          },
+        },
+      });
+
+      return res.status(200).json(costs);
     } catch (err) {
       return res.status(400).json({
         errors: `Error: ${err}`,
