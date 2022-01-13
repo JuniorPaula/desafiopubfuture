@@ -3,6 +3,7 @@ import './database';
 import express from 'express';
 import accountRoutes from './routes/accountRoutes';
 import incomeRoutes from './routes/incomeRoutes';
+import costRoutes from './routes/costRoutes';
 
 class App {
   constructor() {
@@ -19,6 +20,7 @@ class App {
   routes() {
     this.app.use('/accounts', accountRoutes);
     this.app.use('/incomes', incomeRoutes);
+    this.app.use('/costs', costRoutes);
   }
 }
 
